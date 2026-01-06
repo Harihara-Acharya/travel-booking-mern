@@ -11,9 +11,10 @@ function Navbar() {
 
     if (token) {
       API.get("/auth/me")
-        .then((res) => setUser(res.data))
+        .then((res) => {
+          setUser(res.data);
+        })
         .catch(() => {
-          localStorage.removeItem("token");
           setUser(null);
         });
     }
@@ -31,16 +32,15 @@ function Navbar() {
 
       <div className="nav-links">
         <Link to="/">Home</Link>
+
         {user ? (
           <>
             <Link to="/bookings">My Bookings</Link>
 
-            {/* Profile picture */}
             <img
-              src={user.profilePic || "https://i.imgur.com/placeholder.png"}
+              src={user.profilePic || "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"}
               alt="Profile"
-              className="profile-pic"
-              title={user.name}
+              className="profile-avatar"
             />
 
             <button onClick={logout} className="logout-btn">

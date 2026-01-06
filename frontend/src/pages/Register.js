@@ -16,20 +16,47 @@ function Register() {
     profilePic: ""
   });
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("/auth/register", form);
-    navigate("/login");
+    setLoading(true);
+    setError("");
+
+    try {
+      // 1. Register user
+      await API.post("/auth/register", form);
+
+      // 2. Auto-login after register
+      const loginRes = await API.post("/auth/login", {
+        email: form.email,
+        password: form.password
+      });
+
+      // 3. Store token
+      localStorage.setItem("token", loginRes.data.token);
+
+      // 4. Redirect to home
+      window.location.href = "/";
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="auth-container">
       <form className="auth-card" onSubmit={handleSubmit}>
         <h2>Create Account</h2>
+
+        {error && <p className="error-message">{error}</p>}
 
         <input name="name" placeholder="Full Name" onChange={handleChange} required />
         <input name="email" placeholder="Email" onChange={handleChange} required />
@@ -50,7 +77,9 @@ function Register() {
           onChange={handleChange}
         />
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating Account..." : "Register"}
+        </button>
 
         <p className="auth-link" onClick={() => navigate("/login")}>
           Already have an account? Login

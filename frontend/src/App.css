@@ -257,3 +257,13 @@ body {
   right: 8px;
 }
 
+/* Round Profile Avatar */
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 10px;
+  border: 2px solid white;
+}
+

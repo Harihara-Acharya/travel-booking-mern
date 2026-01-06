@@ -3,7 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #0a2540, #133b5c);
+  background: linear-gradient(to right, rgba(10, 37, 64, 0.85), rgba(19, 59, 92, 0.85)),
+              url('https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg');
+  background-size: cover;
+  background-position: center;
 }
 
 .auth-card {
@@ -19,6 +22,7 @@
 .auth-card h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #0a2540;
 }
 
 .auth-card input,
@@ -26,7 +30,15 @@
   margin-bottom: 12px;
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+  outline: none;
+  border-color: #0a2540;
 }
 
 .auth-card button {
@@ -37,10 +49,17 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 16px;
 }
 
-.auth-card button:hover {
+.auth-card button:hover:not(:disabled) {
   background: #133b5c;
+}
+
+.auth-card button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
 }
 
 .auth-link {
@@ -49,5 +68,22 @@
   color: #0a2540;
   cursor: pointer;
   font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #133b5c;
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #fdeaea;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
 }
 

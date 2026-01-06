@@ -8,7 +8,8 @@ const authMiddleware = require("../middleware/authMiddleware");
 // REGISTER API
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    // Extract ALL fields from request body
+    const { name, email, password, phone, city, gender, profilePic } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -19,11 +20,15 @@ router.post("/register", async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user with default profile pic
+    // Create user with all fields
     const user = new User({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      phone: phone || "",
+      city: city || "",
+      gender: gender || "",
+      profilePic: profilePic || "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"
     });
 
     await user.save();
@@ -65,7 +70,11 @@ router.post("/login", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        profilePic: user.profilePic
+        phone: user.phone,
+        city: user.city,
+        gender: user.gender,
+        profilePic: user.profilePic,
+        role: user.role
       }
     });
 
