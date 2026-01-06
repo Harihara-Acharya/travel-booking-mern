@@ -19,6 +19,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/packages", require("./routes/packageRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
+app.use("/api/partner", require("./routes/partnerRoutes"));
 
 // Server Start
 const PORT = 5050;

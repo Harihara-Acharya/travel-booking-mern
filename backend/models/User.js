@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     default: "https://i.imgur.com/placeholder.png"
   },
 
-  role: { type: String, default: "user" }
+  role: { 
+    type: String, 
+    enum: ["user", "partner", "admin"],
+    default: "user" 
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);

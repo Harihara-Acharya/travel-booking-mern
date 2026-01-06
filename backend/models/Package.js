@@ -22,7 +22,13 @@ const packageSchema = new mongoose.Schema({
   },
   description: String,
   // Availability configuration per date and time slot
-  availableDates: [availableDateSchema]
+  availableDates: [availableDateSchema],
+  // Package ownership - required for partner packages
+  partnerId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "User",
+    required: true
+  }
 });
 
 module.exports = mongoose.model("Package", packageSchema);

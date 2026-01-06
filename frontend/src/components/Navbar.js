@@ -36,7 +36,12 @@ function Navbar() {
         {user ? (
           <>
             <Link to="/bookings">My Bookings</Link>
-
+            
+            {/* Partner Dashboard Link - Only visible to partners */}
+            {user.role === "partner" && (
+              <Link to="/partner/dashboard">Partner Dashboard</Link>
+            )}
+            
             <img
               src={user.profilePic || "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg"}
               alt="Profile"
