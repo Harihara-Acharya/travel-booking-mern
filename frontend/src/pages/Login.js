@@ -1,10 +1,11 @@
 import { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "./Auth.css";
 
 function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,12 +19,20 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-      <button type="submit">Login</button>
-    </form>
+    <div className="auth-container">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <h2>Welcome Back</h2>
+
+        <input name="email" placeholder="Email" onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+
+        <button type="submit">Login</button>
+
+        <p className="auth-link" onClick={() => navigate("/register")}>
+          New user? Create account
+        </p>
+      </form>
+    </div>
   );
 }
 

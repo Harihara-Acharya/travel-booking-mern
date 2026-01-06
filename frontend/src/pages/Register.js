@@ -1,10 +1,20 @@
 import { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "./Auth.css";
 
 function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    city: "",
+    gender: "",
+    profilePic: ""
+  });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,13 +27,36 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input name="name" placeholder="Name" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-      <button type="submit">Register</button>
-    </form>
+    <div className="auth-container">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <h2>Create Account</h2>
+
+        <input name="name" placeholder="Full Name" onChange={handleChange} required />
+        <input name="email" placeholder="Email" onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+        <input name="phone" placeholder="Phone Number" onChange={handleChange} />
+        <input name="city" placeholder="City" onChange={handleChange} />
+
+        <select name="gender" onChange={handleChange}>
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+
+        <input
+          name="profilePic"
+          placeholder="Profile Picture URL (optional)"
+          onChange={handleChange}
+        />
+
+        <button type="submit">Register</button>
+
+        <p className="auth-link" onClick={() => navigate("/login")}>
+          Already have an account? Login
+        </p>
+      </form>
+    </div>
   );
 }
 
