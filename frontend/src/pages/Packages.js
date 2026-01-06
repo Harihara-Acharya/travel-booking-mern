@@ -91,22 +91,18 @@ function Packages() {
               </div>
 
               {/* DETAILS */}
-              <h3>{pkg.title}</h3>
-              <p>{pkg.location}</p>
-              <p className="price">₹{pkg.price}</p>
-              {pkg.duration && <p style={{ fontSize: "12px", color: "#888" }}>{pkg.duration}</p>}
+              <div className="card-content">
+                <h3>{pkg.title}</h3>
+                <p className="location">{pkg.location}</p>
 
-              <div style={{ marginTop: "10px" }}>
-                <Link to={`/package/${pkg._id}`} className="view-btn">
+                <div className="badge-row">
+                  <span className="badge price">₹{pkg.price}</span>
+                  {pkg.duration && <span className="badge duration">{pkg.duration}</span>}
+                </div>
+
+                <Link to={`/package/${pkg._id}`} className="primary-btn">
                   View Details
                 </Link>
-                <button 
-                  onClick={() => bookPackage(pkg._id)} 
-                  className="view-btn"
-                  style={{ marginLeft: "10px" }}
-                >
-                  Book Now
-                </button>
               </div>
             </div>
           );
