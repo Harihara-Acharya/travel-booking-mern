@@ -364,6 +364,41 @@ body {
   color: #166534;
 }
 
+/* Booking Details */
+.booking-details {
+  margin: 10px 0;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.detail-label {
+  color: #666;
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.detail-value.price {
+  color: #0a2540;
+  font-weight: bold;
+}
+
+.booking-location {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
 /* Danger Button */
 .danger-btn {
   background: crimson;

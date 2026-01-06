@@ -32,6 +32,34 @@ function MyBookings() {
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    });
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "confirmed":
+        return "status-confirmed";
+      case "pending":
+        return "status-pending";
+      case "cancelled":
+        return "status-cancelled";
+      default:
+        return "status-active";
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    if (!status) return "Active";
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
+
   if (loading) {
     return <div className="spinner"></div>;
   }
@@ -56,16 +84,46 @@ function MyBookings() {
 
           <div className="booking-info">
             <h3>{b.packageId?.title || "Package"}</h3>
-            <p>{b.packageId?.location || "N/A"}</p>
+            <p className="booking-location">{b.packageId?.location || "N/A"}</p>
+            
+            {/* Booking Details */}
+            <div className="booking-details">
+              <div className="detail-row">
+                <span className="detail-label">Travel Date:</span>
+                <span className="detail-value">{formatDate(b.travelDate)}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Time Slot:</span>
+                <span className="detail-value">
+                  {b.timeSlot?.start && b.timeSlot?.end 
+                    ? `${b.timeSlot.start} - ${b.timeSlot.end}` 
+                    : "N/A"}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Persons:</span>
+                <span className="detail-value">{b.persons || 1}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Total Price:</span>
+                <span className="detail-value price">₹{b.totalPrice || b.packageId?.price}</span>
+              </div>
+            </div>
 
-            <span className="status active">Active</span>
+            {/* Status Badge */}
+            <span className={`status ${getStatusClass(b.status)}`}>
+              {getStatusLabel(b.status)}
+            </span>
 
-            <button
-              className="danger-btn"
-              onClick={() => cancelBooking(b._id)}
-            >
-              Cancel Booking
-            </button>
+            {/* Cancel Button - Only for pending bookings */}
+            {b.status === "pending" && (
+              <button
+                className="danger-btn"
+                onClick={() => cancelBooking(b._id)}
+              >
+                Cancel Booking
+              </button>
+            )}
           </div>
         </div>
       ))}
