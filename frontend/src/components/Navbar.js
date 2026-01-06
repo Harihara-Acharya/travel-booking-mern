@@ -1,18 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import API from "../services/api";
 
 function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+
+    if (token) {
+      API.get("/auth/me")
+        .then((res) => setUser(res.data))
+        .catch(() => {
+          localStorage.removeItem("token");
+          setUser(null);
+        });
+    }
   }, []);
 
-  const handleLogout = () => {
+  const logout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    setUser(null);
     navigate("/login");
   };
 
@@ -22,12 +31,19 @@ function Navbar() {
 
       <div className="nav-links">
         <Link to="/">Home</Link>
-        <Link to="/">Packages</Link>
-
-        {isLoggedIn ? (
+        {user ? (
           <>
             <Link to="/bookings">My Bookings</Link>
-            <button onClick={handleLogout} className="logout-btn">
+
+            {/* Profile picture */}
+            <img
+              src={user.profilePic || "https://i.imgur.com/placeholder.png"}
+              alt="Profile"
+              className="profile-pic"
+              title={user.name}
+            />
+
+            <button onClick={logout} className="logout-btn">
               Logout
             </button>
           </>

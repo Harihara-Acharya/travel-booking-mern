@@ -164,3 +164,45 @@ body {
   color: #856404;
 }
 
+.status-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 2px solid white;
+  vertical-align: middle;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background: #dc3545;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.cancel-btn:hover {
+  background: #c82333;
+}
+
+.cancel-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+

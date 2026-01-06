@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // REGISTER API
 router.post("/register", async (req, res) => {
@@ -18,7 +19,7 @@ router.post("/register", async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create user with default profile pic
     const user = new User({
       name,
       email,
@@ -63,12 +64,23 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        profilePic: user.profilePic
       }
     });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// GET Logged-in User Info
+router.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
