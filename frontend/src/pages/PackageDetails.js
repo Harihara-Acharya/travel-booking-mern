@@ -53,6 +53,10 @@ function PackageDetails() {
       setTimeSlot({ start: "12:00", end: "16:00" });
     } else if (value === "evening") {
       setTimeSlot({ start: "16:00", end: "20:00" });
+    } else if (value.includes("-")) {
+      // Parse custom time slot in "start-end" format
+      const [start, end] = value.split("-");
+      setTimeSlot({ start, end });
     } else {
       setTimeSlot({ start: "", end: "" });
     }
@@ -111,10 +115,11 @@ function PackageDetails() {
   // Check if a date has any available slots
   const hasAvailableSlots = (dateStr) => {
     if (!pkg?.availableDates) return false;
-    
+
+    // Create separate Date objects to avoid mutation
     const requestedDate = new Date(dateStr);
     requestedDate.setHours(0, 0, 0, 0);
-    
+
     const availableDate = pkg.availableDates.find(ad => {
       const adDate = new Date(ad.date);
       adDate.setHours(0, 0, 0, 0);
@@ -127,10 +132,11 @@ function PackageDetails() {
   // Get available time slots for selected date
   const getAvailableTimeSlots = () => {
     if (!pkg?.availableDates || !travelDate) return [];
-    
+
+    // Create separate Date object to avoid mutation
     const requestedDate = new Date(travelDate);
     requestedDate.setHours(0, 0, 0, 0);
-    
+
     const availableDate = pkg.availableDates.find(ad => {
       const adDate = new Date(ad.date);
       adDate.setHours(0, 0, 0, 0);
@@ -249,23 +255,18 @@ function PackageDetails() {
           {/* Time Slot */}
           <div className="form-group">
             <label>Time Slot</label>
-            <select 
-              value={timeSlot.start ? (timeSlot.start === "08:00" ? "morning" : timeSlot.start === "12:00" ? "afternoon" : timeSlot.start === "16:00" ? "evening" : "") : ""} 
+            <select
+              value={timeSlot.start ? `${timeSlot.start}-${timeSlot.end}` : ""}
               onChange={handleTimeSlotChange}
               disabled={!travelDate}
               className={!travelDate ? "disabled-input" : ""}
             >
               <option value="">Select a time slot</option>
               {getAvailableTimeSlots().map((slot, idx) => (
-                <option key={idx} value={
-                  slot.start === "08:00" ? "morning" : 
-                  slot.start === "12:00" ? "afternoon" : 
-                  slot.start === "16:00" ? "evening" : 
-                  `${slot.start}-${slot.end}`
-                }>
+                <option key={idx} value={`${slot.start}-${slot.end}`}>
                   {formatTimeSlotLabel(
-                    slot.start === "08:00" ? "morning" : 
-                    slot.start === "12:00" ? "afternoon" : 
+                    slot.start === "08:00" ? "morning" :
+                    slot.start === "12:00" ? "afternoon" :
                     slot.start === "16:00" ? "evening" : "custom",
                     slot
                   )}
