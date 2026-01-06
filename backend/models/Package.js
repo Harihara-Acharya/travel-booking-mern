@@ -5,7 +5,10 @@ const packageSchema = new mongoose.Schema({
   location: String,
   price: Number,
   duration: String,
-  image: String,
+  images: {
+    type: [String],
+    default: []
+  },
   description: String
 });
 

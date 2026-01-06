@@ -11,9 +11,23 @@ router.get("/", async (req, res) => {
 
 // ADD Package (Admin only – simple version)
 router.post("/", auth, async (req, res) => {
-  const newPackage = new Package(req.body);
-  await newPackage.save();
-  res.json({ message: "Package added" });
+  try {
+    const { title, location, price, duration, description, images } = req.body;
+    
+    const newPackage = new Package({
+      title,
+      location,
+      price,
+      duration,
+      images: images || [],
+      description
+    });
+    
+    await newPackage.save();
+    res.json({ message: "Package added" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
